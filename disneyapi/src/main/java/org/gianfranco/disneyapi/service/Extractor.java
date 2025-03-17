@@ -1,7 +1,7 @@
-package org.gianfranco.artapi.service;
+package org.gianfranco.disneyapi.service;
 
-import org.gianfranco.artapi.model.Art;
-import org.gianfranco.artapi.utils.ArtMapper;
+import org.gianfranco.disneyapi.model.Character;
+import org.gianfranco.disneyapi.utils.CharacterMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,10 +15,10 @@ import java.util.List;
 
 public class Extractor {
 
-    private static final String API_URL = "https://api.artic.edu/api/v1/artworks";
+    private static final String API_URL = "https://api.disneyapi.dev/character";
 
-    public static List<Art> getArts(int page, int limit) {
-        String url = API_URL + "?fields=id,title,image_id&page=" + page + "&limit=" + limit;
+    public static List<Character> getCharacters(int page, int limit) {
+        String url = API_URL + "?&page=" + page + "&pageSize=" + limit;
         HttpResponse<String> response;
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
@@ -35,18 +35,22 @@ public class Extractor {
         String responseBody = response.body();
         JSONObject jsonObject = new JSONObject(responseBody);
         JSONArray dataArray = jsonObject.getJSONArray("data");
-        List<Art> artList = new ArrayList<>();
+        List<Character> characterList = new ArrayList<>();
 
         for (Object data : dataArray) {
-            JSONObject artwork = (JSONObject) data;
-            artList.add(ArtMapper.getArt(artwork));
+            JSONObject disneyWork = (JSONObject) data;
+            characterList.add(CharacterMapper.getCharacter(disneyWork));
         }
 
-        return artList;
+        return characterList;
     }
 
-    public static byte[] getArtImage(String imageId) {
-        String imageUrl = "https://www.artic.edu/iiif/2/" + imageId + "/full/843,/0/default.jpg";
+    public static byte[] getImage(Character character) {
+        return getImage(character, false);
+    }
+
+    public static byte[] getImage(Character character, boolean ignoreStatusCode) {
+        String imageUrl = character.getImageUrl();
         HttpResponse<byte[]> response;
         try (HttpClient client = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
@@ -59,7 +63,7 @@ public class Extractor {
             }
         }
 
-        if (response.statusCode() != 200) {
+        if (response.statusCode() != 200 && !ignoreStatusCode) {
             throw new RuntimeException("Error - status code: " + response.statusCode());
         }
 

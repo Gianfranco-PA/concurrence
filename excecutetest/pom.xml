@@ -14,8 +14,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.gianfranco.artapi</groupId>
-            <artifactId>artapi</artifactId>
+            <groupId>org.gianfranco.disneyapi</groupId>
+            <artifactId>disneyapi</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
