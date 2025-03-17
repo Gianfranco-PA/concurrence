@@ -9,6 +9,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Implements concurrent image size calculation using virtual threads.
+ */
 public class Concurrence implements ImageSizeTotal {
 
     public long get(List<Character> characterList) {

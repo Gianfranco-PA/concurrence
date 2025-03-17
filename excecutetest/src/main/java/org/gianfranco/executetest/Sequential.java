@@ -5,6 +5,9 @@ import org.gianfranco.disneyapi.service.Extractor;
 
 import java.util.List;
 
+/**
+ * Implements sequential image size calculation.
+ */
 public class Sequential implements ImageSizeTotal {
 
     public long get(List<Character> characterList) {

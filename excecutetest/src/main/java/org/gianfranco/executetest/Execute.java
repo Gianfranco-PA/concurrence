@@ -6,6 +6,9 @@ import org.gianfranco.disneyapi.service.Extractor;
 
 import java.util.List;
 
+/**
+ * Main class to execute image size calculations using both sequential and concurrent approaches.
+ */
 public class Execute {
 
     public static void main(String[] args) {

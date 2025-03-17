@@ -1,5 +1,8 @@
 package org.gianfranco.disneyapi.model;
 
+/**
+ * Represents a Disney character.
+ */
 public class Character {
     private int id;
     private String name;
