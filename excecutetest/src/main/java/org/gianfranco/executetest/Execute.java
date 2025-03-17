@@ -19,25 +19,10 @@ public class Execute {
                         character.getImageUrl() != null)
                 .toList();
 
-        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-        List<CompletableFuture<Long>> futures = new ArrayList<>();
+        Sequential sequential = new Sequential();
+        Concurrence concurrence = new Concurrence();
 
-        for (Character character : characterList) {
-            CompletableFuture<Long> future = CompletableFuture
-                    .supplyAsync(() -> (long) (
-                                    Extractor.getImage(character, true).length
-                            ), executor);
-
-            futures.add(future);
-        }
-
-        long totalBytes = futures.stream().mapToLong(CompletableFuture::join).sum();
-        long totalKB = totalBytes / 1024;
-        long totalMB = totalKB / 1024;
-
-        System.out.println("Total KB: " + totalKB + "KB");
-        System.out.println("Total MB: " + totalMB + "MB");
-
-        executor.shutdown();
+        CalculateTime.calculate(concurrence, characterList);
+        CalculateTime.calculate(sequential, characterList);
     }
 }
